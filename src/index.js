@@ -30,10 +30,20 @@ function* postFruit(action) {
     }
 }
 
+function* deleteFruit(action) {
+    try {
+        yield call(axios.delete, `/fruit/${action.payload}`);
+        yield put({type: 'FETCH_FRUIT'})
+    } catch(err) {
+        console.log('error in deletefruit saga:', err);
+    }
+}
+
 // Create the rootSaga generator function
 function* rootSaga() {
     yield takeEvery('FETCH_FRUIT', fetchFruit)
     yield takeEvery('ADD_FRUIT', postFruit)
+    yield takeEvery('DELETE_FRUIT', deleteFruit)
 }
 
 // Create sagaMiddleware

@@ -4,15 +4,7 @@ import { connect } from 'react-redux';
 
 class FruitItem extends Component {
     removeItem = () => {
-        axios({
-            method: 'DELETE',
-            url: `/fruit/${this.props.basketItem.id}`
-        }).then((response) => {
-            this.getFruit();
-        }).catch((error) => {
-            console.log(error);
-            alert('Unable to delete item');
-        });  
+        this.props.dispatch({ type: 'DELETE_FRUIT', payload: this.props.basketItem.id})
     }
 
     getFruit() {
