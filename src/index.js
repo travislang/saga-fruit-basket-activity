@@ -21,9 +21,19 @@ function* fetchFruit() {
     }
 }
 
+function* postFruit(action) {
+    try {
+        yield call(axios.post, '/fruit', action.payload);
+        yield put({ type: 'FETCH_FRUIT'})
+    } catch(err) {
+        console.log('error in postfruit saga:', err);
+    }
+}
+
 // Create the rootSaga generator function
 function* rootSaga() {
     yield takeEvery('FETCH_FRUIT', fetchFruit)
+    yield takeEvery('ADD_FRUIT', postFruit)
 }
 
 // Create sagaMiddleware
