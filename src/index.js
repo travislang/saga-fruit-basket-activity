@@ -4,15 +4,26 @@ import './index.css';
 import App from './components/App/App.js';
 import registerServiceWorker from './registerServiceWorker';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
+import axios from 'axios';
 // Provider allows us to use redux within our react app
 import { Provider } from 'react-redux';
 import logger from 'redux-logger';
 // Import saga middleware
 import createSagaMiddleware from 'redux-saga';
+import { takeEvery, call, put } from 'redux-saga/effects';
+
+function* fetchFruit() {
+    try {
+        const fetchRes = yield call(axios.get, '/fruit');
+        yield put({ type: 'SET_BASKET', payload: fetchRes.data })
+    } catch(err) {
+        console.log('error in saga fetchFruit:', err);
+    }
+}
 
 // Create the rootSaga generator function
 function* rootSaga() {
-
+    yield takeEvery('FETCH_FRUIT', fetchFruit)
 }
 
 // Create sagaMiddleware
